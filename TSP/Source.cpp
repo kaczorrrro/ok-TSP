@@ -4,13 +4,13 @@
 #include <vector>
 #include <climits>
 #include <unordered_set>
-
+#include <ctime>
 #include "Parser.h"
 #include "Vertex.h"
-
+#include "BFS.h"
+#include "Solution.h"
 using namespace std;
 
-long long bfs(Vertex *vStart, unordered_set<Vertex*> &vertsLeft, vector<Vertex*> &path);
 
 
 int main(int argc, char* argv[]) {
@@ -18,52 +18,51 @@ int main(int argc, char* argv[]) {
 		cout << "Enter file" << endl;
 		return -1;
 	}
-		
+	std::srand(unsigned(std::time(0)));
+	
+	bool bfs = false;
+	bool simulated = true;
+
+	//parse data
 	Parser p;
 	vector<Vertex> verts = p.parse(argv[1]);
+	vector<Vertex*> pointersToVerts;
+	for (unsigned int i = 0; i < verts.size(); i++)
+		pointersToVerts.push_back(&verts[i]);
 
-	vector<Vertex*> path;
-	unordered_set<Vertex*> vertsLeft;
-	for (unsigned int i = 0; i < verts.size(); i++) 
-		vertsLeft.insert(&verts[i]);
-	Vertex *vStart = &verts[0];
+
 	
-	long long dist = bfs(vStart, vertsLeft, path);
 
-	for (Vertex *v : path){
-		cout << v->num << endl;
+	if (bfs) {
+		unordered_set<Vertex*> vertsLeft(pointersToVerts.begin(), pointersToVerts.end());
+		vector<Vertex*> path;
+		Vertex *vStart = &verts[0];
+		BFS::bfs(vStart, vertsLeft, path);
+		Solution soultion(path);
+		cout << soultion.getTotalDist() << endl;
 	}
 
-	cout << "Dist: " << dist << endl;
-	
-}
+	if (simulated) {
+		Solution s(pointersToVerts);
+		s.shuffle();
+		int minDist = s.getTotalDist();
 
-//breadth first search
-long long bfs(Vertex *vStart, unordered_set<Vertex*> &vertsLeft, vector<Vertex*> &path) {
-	long long totalDist = 0;
-	while (true) {
-		if (vertsLeft.size() == 0)
-			break;
-
-		Vertex* closestV;
-		int minDist = INT_MAX;
-
-		//find closest vertex
-		for (Vertex* v : vertsLeft)
-		{
-			int dist = vStart->sdist(*v);
-
-			if (dist < minDist) {
-				minDist = dist;
-				closestV = v;
+		for (int i = 0; i < 100; i++) {
+			int p1 = rand() % 4 + 1;
+			int p2 = rand() % 4 + 1;
+			int temp = s.getDistForSwapped(p1,p2);
+			if (temp < minDist) {
+				minDist = temp;
+				s.swap(p1, p2);
+				cout << s.toString() << endl;
+				cout << s.getTotalDist() << endl;
 			}
 		}
-		totalDist += sqrt(minDist);
-
-		//delete from set of unvisited and add to path
-		vertsLeft.erase(closestV);
-		path.push_back(closestV);
-		vStart = closestV;
+			
+		cout << s.toString() << endl;
+		cout << s.getTotalDist() << endl;
 	}
-	return totalDist;
+	
+	
 }
+

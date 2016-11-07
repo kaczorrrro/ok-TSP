@@ -10,7 +10,7 @@ string Vertex::toString()
 	return ss.str();
 }
 
-int Vertex::sdist(const Vertex & v2)
+int Vertex::dist(const Vertex & v2)
 {
 	int xD = x - v2.x;
 	int yD = y - v2.y;
