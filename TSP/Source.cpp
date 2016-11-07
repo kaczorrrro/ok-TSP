@@ -58,7 +58,7 @@ long long bfs(Vertex *vStart, unordered_set<Vertex*> &vertsLeft, vector<Vertex*>
 				closestV = v;
 			}
 		}
-		totalDist += minDist;
+		totalDist += sqrt(minDist);
 
 		//delete from set of unvisited and add to path
 		vertsLeft.erase(closestV);
