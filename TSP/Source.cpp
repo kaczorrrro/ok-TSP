@@ -10,7 +10,7 @@
 
 using namespace std;
 
-int bfs(Vertex *vStart, unordered_set<Vertex*> &vertsLeft, vector<Vertex*> &path);
+long long bfs(Vertex *vStart, unordered_set<Vertex*> &vertsLeft, vector<Vertex*> &path);
 
 
 int main(int argc, char* argv[]) {
@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
 		vertsLeft.insert(&verts[i]);
 	Vertex *vStart = &verts[0];
 	
-	int dist = bfs(vStart, vertsLeft, path);
+	long long dist = bfs(vStart, vertsLeft, path);
 
 	for (Vertex *v : path){
 		cout << v->num << endl;
@@ -39,8 +39,8 @@ int main(int argc, char* argv[]) {
 }
 
 //breadth first search
-int bfs(Vertex *vStart, unordered_set<Vertex*> &vertsLeft, vector<Vertex*> &path) {
-	int totalDist = 0;
+long long bfs(Vertex *vStart, unordered_set<Vertex*> &vertsLeft, vector<Vertex*> &path) {
+	long long totalDist = 0;
 	while (true) {
 		if (vertsLeft.size() == 0)
 			break;
@@ -65,4 +65,5 @@ int bfs(Vertex *vStart, unordered_set<Vertex*> &vertsLeft, vector<Vertex*> &path
 		path.push_back(closestV);
 		vStart = closestV;
 	}
+	return totalDist;
 }
