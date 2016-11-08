@@ -10,9 +10,9 @@ string Vertex::toString()
 	return ss.str();
 }
 
-int Vertex::dist(const Vertex & v2)
+long long Vertex::dist(const Vertex & v2)
 {
-	int xD = x - v2.x;
-	int yD = y - v2.y;
+	long long xD = x - v2.x;
+	long long yD = y - v2.y;
 	return xD*xD + yD*yD;
 }

@@ -5,5 +5,5 @@ class Vertex {
 public:
 	int x, y, num;
 	string toString();
-	int dist(const Vertex &v2);
+	long long dist(const Vertex &v2);
 };

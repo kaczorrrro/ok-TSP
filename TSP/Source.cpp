@@ -9,6 +9,7 @@
 #include "Vertex.h"
 #include "BFS.h"
 #include "Solution.h"
+#include "SimulatedAnnealing.h"
 using namespace std;
 
 
@@ -20,7 +21,7 @@ int main(int argc, char* argv[]) {
 	}
 	std::srand(unsigned(std::time(0)));
 	
-	bool bfs = false;
+	bool bfs = true;
 	bool simulated = true;
 
 	//parse data
@@ -30,30 +31,32 @@ int main(int argc, char* argv[]) {
 	for (unsigned int i = 0; i < verts.size(); i++)
 		pointersToVerts.push_back(&verts[i]);
 
+	Solution initial(pointersToVerts);
+	cout << "Initial dist:" << (double)initial.getTotalDist() << endl;
 
+	
 	if (bfs) {
+		cout << "Greedy" << endl;
+
 		unordered_set<Vertex*> vertsLeft(pointersToVerts.begin(), pointersToVerts.end());
 		vector<Vertex*> path;
 		Vertex *vStart = &verts[0];
 		BFS::bfs(vStart, vertsLeft, path);
 		Solution soultion(path);
-		cout << soultion.getTotalDist() << endl;
+		cout << (double)soultion.getTotalDist() << endl;
 	}
 
 	if (simulated) {
+		cout << "Simulated Annealing" << endl;
+
 		Solution s(pointersToVerts);
-		int vertsCount = s.getNumberOfVerts()-1;
+		cout << "Start" << endl;
 
-		for (int i=0; i<100000;i++)
-		{
-			int p1, p2;
-			p1 = rand() % vertsCount;
-			p2 = rand() % vertsCount;
+		SimulatedAnnealing sim(1000, 0.00001);
+		Solution finalSolution = sim.run(s);
+		cout << "End" << endl;
 
-			
-			s.swap(p1, p2);
-			cout << i << '\r';
-		}	
+		cout << (double)finalSolution.getTotalDist() << endl;
 
 	}
 	

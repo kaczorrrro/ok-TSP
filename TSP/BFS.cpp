@@ -7,12 +7,12 @@ long long BFS::bfs(Vertex *vStart, unordered_set<Vertex*> &vertsLeft, vector<Ver
 			break;
 
 		Vertex* closestV;
-		int minDist = INT_MAX;
+		long long minDist = LLONG_MAX;
 
 		//find closest vertex
 		for (Vertex* v : vertsLeft)
 		{
-			int dist = vStart->dist(*v);
+			long long dist = vStart->dist(*v);
 
 			if (dist < minDist) {
 				minDist = dist;
