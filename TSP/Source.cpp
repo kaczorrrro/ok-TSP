@@ -31,8 +31,6 @@ int main(int argc, char* argv[]) {
 		pointersToVerts.push_back(&verts[i]);
 
 
-	
-
 	if (bfs) {
 		unordered_set<Vertex*> vertsLeft(pointersToVerts.begin(), pointersToVerts.end());
 		vector<Vertex*> path;
@@ -44,23 +42,19 @@ int main(int argc, char* argv[]) {
 
 	if (simulated) {
 		Solution s(pointersToVerts);
-		s.shuffle();
-		int minDist = s.getTotalDist();
+		int vertsCount = s.getNumberOfVerts()-1;
 
-		for (int i = 0; i < 100; i++) {
-			int p1 = rand() % 4 + 1;
-			int p2 = rand() % 4 + 1;
-			int temp = s.getDistForSwapped(p1,p2);
-			if (temp < minDist) {
-				minDist = temp;
-				s.swap(p1, p2);
-				cout << s.toString() << endl;
-				cout << s.getTotalDist() << endl;
-			}
-		}
+		for (int i=0; i<100000;i++)
+		{
+			int p1, p2;
+			p1 = rand() % vertsCount;
+			p2 = rand() % vertsCount;
+
 			
-		cout << s.toString() << endl;
-		cout << s.getTotalDist() << endl;
+			s.swap(p1, p2);
+			cout << i << '\r';
+		}	
+
 	}
 	
 	
