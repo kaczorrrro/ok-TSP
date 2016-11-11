@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
 		pointersToVerts.push_back(&verts[i]);
 
 	Solution initial(pointersToVerts);
-	cout << "Initial dist:" << (double)initial.getTotalDist() << endl;
+	cout << "Initial dist:" << initial.getTotalDist() << endl;
 
 	
 	if (bfs) {
@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
 		Vertex *vStart = &verts[0];
 		BFS::bfs(vStart, vertsLeft, path);
 		Solution soultion(path);
-		cout << (double)soultion.getTotalDist() << endl;
+		cout << soultion.getTotalDist()<< endl;
 	}
 
 	if (simulated) {
@@ -52,11 +52,11 @@ int main(int argc, char* argv[]) {
 		Solution s(pointersToVerts);
 		cout << "Start" << endl;
 
-		SimulatedAnnealing sim(1000, 0.00001);
+		SimulatedAnnealing sim(550, 0.01, 0.000001);
 		Solution finalSolution = sim.run(s);
 		cout << "End" << endl;
 
-		cout << (double)finalSolution.getTotalDist() << endl;
+		cout << finalSolution.getTotalDist() << endl;
 
 	}
 	

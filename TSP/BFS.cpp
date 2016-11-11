@@ -1,18 +1,18 @@
 #include "BFS.h"
 
-long long BFS::bfs(Vertex *vStart, unordered_set<Vertex*> &vertsLeft, vector<Vertex*> &path) {
-	long long totalDist = 0;
+double BFS::bfs(Vertex *vStart, unordered_set<Vertex*> &vertsLeft, vector<Vertex*> &path) {
+	double totalDist = 0;
 	while (true) {
 		if (vertsLeft.size() == 0)
 			break;
 
 		Vertex* closestV;
-		long long minDist = LLONG_MAX;
+		double minDist = 1e300;
 
 		//find closest vertex
 		for (Vertex* v : vertsLeft)
 		{
-			long long dist = vStart->dist(*v);
+			double dist = vStart->dist(*v);
 
 			if (dist < minDist) {
 				minDist = dist;

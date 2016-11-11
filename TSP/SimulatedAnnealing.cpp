@@ -1,6 +1,7 @@
 #include "SimulatedAnnealing.h"
+#include <iostream>
 
-SimulatedAnnealing::SimulatedAnnealing(double startTemp, double speed): startTemp(startTemp), coolingRate(speed)
+SimulatedAnnealing::SimulatedAnnealing(double startTemp, double minTemp, double speed): startTemp(startTemp),minTemp(minTemp), coolingRate(speed)
 {
 }
 
@@ -9,15 +10,19 @@ Solution SimulatedAnnealing::run(Solution solution)
 	int vertsCount = solution.getNumberOfVerts() - 1;
 	
 	Solution currentBest = solution;
-	long long bestDistance = currentBest.getTotalDist();
+	double bestDistance = currentBest.getTotalDist();
 
-	long long oldDistance = solution.getTotalDist();
-	for (double temp = startTemp; temp > 1; temp *= (1-coolingRate)) {
+	double oldDistance = solution.getTotalDist();
+	int i = 0;
+	for (double temp = startTemp; temp > minTemp; temp *= (1-coolingRate), i++) {
+		if (i % 0x1000 == 0) {
+			cout << "Current temp: " << temp << "\tBest solution: " << currentBest.getTotalDist() << "\tLocal solution: " << solution.getTotalDist() << endl;
+		}
 		int p1, p2;
 		p1 = rand() % vertsCount;
 		p2 = rand() % vertsCount;
 		
-		long long newDistance = solution.getDistForSwapped(p1, p2);
+		double newDistance = solution.getDistForSwapped(p1, p2);
 
 		if (shouldSwap(oldDistance, newDistance, temp)){
 			solution.swap(p1, p2);
@@ -32,11 +37,11 @@ Solution SimulatedAnnealing::run(Solution solution)
 	return currentBest;
 }
 
-bool SimulatedAnnealing::shouldSwap(long long oldDistance, long long newDistance, double temp){
+bool SimulatedAnnealing::shouldSwap(double oldDistance, double newDistance, double temp){
 	if (oldDistance >= newDistance)
 		return true;
 	double x = ((double)rand() / (RAND_MAX));
-	return x < exp( (sqrt(oldDistance) - sqrt(newDistance) ) / temp );
+	return x < exp( (oldDistance - newDistance ) / temp );
 }
 
 

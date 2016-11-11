@@ -22,7 +22,7 @@ void Solution::shuffle()
 	totalDist = calculateDistance();
 }
 
-long long Solution::getDistForSwapped(int pos1, int pos2)
+double Solution::getDistForSwapped(int pos1, int pos2)
 {
 	parseInputPositions(pos1, pos2);
 
@@ -33,8 +33,8 @@ long long Solution::getDistForSwapped(int pos1, int pos2)
 	if (pos1 == pos2)
 		return totalDist;
 
-	long long toRemove = 0;
-	long long toAdd = 0;
+	double toRemove = 0;
+	double toAdd = 0;
 
 	if (pos1 == 0) {
 		toRemove += distForRange(pos1, pos1 + 1);
@@ -79,8 +79,8 @@ void Solution::swap(int pos1, int pos2)
 }
 
 
-long long Solution::distForRange(int start, int end) {
-	long long sum = 0;
+double Solution::distForRange(int start, int end) {
+	double sum = 0;
 
 	for (int i = start; i < end; i++) {
 		sum+=path[i]->dist(*path[i + 1]);
@@ -103,14 +103,16 @@ void Solution::justSwap(int pos1, int pos2) {
 	}
 }
 
-long long Solution::calculateDistance() {
-	long long sum = 0;
+double Solution::calculateDistance() {
+	double sum = 0;
 	for (int i = 0, n = (int)path.size()-1; i < n; i++)
 	{
 		sum += path[i]->dist(*path[i + 1]);
 	}
 	return sum;
 }
+
+
 
 string Solution::toString()
 {

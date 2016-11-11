@@ -7,14 +7,14 @@ class Solution
 public:
 	Solution(std::vector<Vertex*> verts);
 	void shuffle();
-	long long getTotalDist() { return totalDist; };
+	double getTotalDist() { return totalDist; };
 	int getNumberOfVerts() { return numberOfVerts; };
-	long long getDistForSwapped(int pos1, int pos2);
+	double getDistForSwapped(int pos1, int pos2);
 	void swap(int pos1, int pos2);
-	long long calculateDistance();
+	double calculateDistance();
 	string toString();
 private:
-	long long totalDist;
+	double totalDist;
 	int numberOfVerts;
 	std::vector<Vertex*> path;
 
@@ -26,7 +26,7 @@ private:
 	/*
 	Both start and end included
 	*/
-	long long distForRange(int start, int end);
+	double distForRange(int start, int end);
 
 	void parseInputPositions(int &pos1, int &pos2);
 	
