@@ -10,6 +10,8 @@
 #include "BFS.h"
 #include "Solution.h"
 #include "SimulatedAnnealing.h"
+#include "RandomizedLocalSearch.h"
+#include "RandomizedIterativeImprovement.h"
 using namespace std;
 
 
@@ -22,7 +24,9 @@ int main(int argc, char* argv[]) {
 	std::srand(unsigned(std::time(0)));
 	
 	bool bfs = true;
-	bool simulated = true;
+	bool simulated = false;
+	bool randomized = false;
+	bool iterative = true;
 
 	//parse data
 	Parser p;
@@ -42,8 +46,9 @@ int main(int argc, char* argv[]) {
 		vector<Vertex*> path;
 		Vertex *vStart = &verts[0];
 		BFS::bfs(vStart, vertsLeft, path);
-		Solution soultion(path);
-		cout << soultion.getTotalDist()<< endl;
+		Solution solution(path);
+		cout << solution.toString() << endl;
+		cout << solution.getTotalDist()<< endl;
 	}
 
 	if (simulated) {
@@ -52,10 +57,41 @@ int main(int argc, char* argv[]) {
 		Solution s(pointersToVerts);
 		cout << "Start" << endl;
 
-		SimulatedAnnealing sim(550, 0.01, 0.000001);
+		SimulatedAnnealing sim(1000, 40, 0.0000004,16384);
 		Solution finalSolution = sim.run(s);
 		cout << "End" << endl;
 
+		cout << finalSolution.toString() << endl;
+		cout << finalSolution.getTotalDist() << endl;
+
+	}
+
+	if (randomized) {
+		cout << "Randomized Local Search" << endl;
+
+		Solution s(pointersToVerts);
+		cout << "Start" << endl;
+
+		RandomizedLocalSearch r(0x10000);
+		Solution finalSolution = r.run(s, 10000000);
+		cout << "End" << endl;
+
+		cout << finalSolution.toString() << endl;
+		cout << finalSolution.getTotalDist() << endl;
+
+	}
+
+	if (iterative) {
+		cout << "Randomized iterative improvment" << endl;
+
+		Solution s(pointersToVerts);
+		cout << "Start" << endl;
+
+		RandomizedIterativeImprovement r(20);
+		Solution finalSolution = r.run(s, 1000);
+		cout << "End" << endl;
+
+		cout << finalSolution.toString() << endl;
 		cout << finalSolution.getTotalDist() << endl;
 
 	}

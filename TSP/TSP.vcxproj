@@ -144,6 +144,8 @@
   <ItemGroup>
     <ClCompile Include="BFS.cpp" />
     <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="RandomizedIterativeImprovement.cpp" />
+    <ClCompile Include="RandomizedLocalSearch.cpp" />
     <ClCompile Include="SimulatedAnnealing.cpp" />
     <ClCompile Include="Solution.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -152,6 +154,8 @@
   <ItemGroup>
     <ClInclude Include="BFS.h" />
     <ClInclude Include="Parser.h" />
+    <ClInclude Include="RandomizedIterativeImprovement.h" />
+    <ClInclude Include="RandomizedLocalSearch.h" />
     <ClInclude Include="SimulatedAnnealing.h" />
     <ClInclude Include="Solution.h" />
     <ClInclude Include="Vertex.h" />

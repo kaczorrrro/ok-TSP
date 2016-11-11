@@ -1,7 +1,7 @@
 #include "SimulatedAnnealing.h"
 #include <iostream>
 
-SimulatedAnnealing::SimulatedAnnealing(double startTemp, double minTemp, double speed): startTemp(startTemp),minTemp(minTemp), coolingRate(speed)
+SimulatedAnnealing::SimulatedAnnealing(double startTemp, double minTemp, double speed, int infoFreq): startTemp(startTemp),minTemp(minTemp), coolingRate(speed), infoFreq(infoFreq)
 {
 }
 
@@ -15,7 +15,7 @@ Solution SimulatedAnnealing::run(Solution solution)
 	double oldDistance = solution.getTotalDist();
 	int i = 0;
 	for (double temp = startTemp; temp > minTemp; temp *= (1-coolingRate), i++) {
-		if (i % 0x1000 == 0) {
+		if (i % infoFreq == 0) {
 			cout << "Current temp: " << temp << "\tBest solution: " << currentBest.getTotalDist() << "\tLocal solution: " << solution.getTotalDist() << endl;
 		}
 		int p1, p2;

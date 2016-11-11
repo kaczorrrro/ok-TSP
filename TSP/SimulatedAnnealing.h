@@ -3,7 +3,7 @@
 class SimulatedAnnealing
 {
 public:
-	SimulatedAnnealing(double startTemp, double minTemp, double speed);
+	SimulatedAnnealing(double startTemp, double minTemp, double speed, int infoFreq = 0x1000);
 	Solution run(Solution initial);
 
 	
@@ -14,6 +14,7 @@ public:
 
 private:
 	double startTemp, minTemp, coolingRate;
+	int infoFreq;
 	bool shouldSwap(double oldDistance, double newDistance, double temp);
 };
 

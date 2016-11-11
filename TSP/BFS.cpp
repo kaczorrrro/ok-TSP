@@ -2,6 +2,8 @@
 
 double BFS::bfs(Vertex *vStart, unordered_set<Vertex*> &vertsLeft, vector<Vertex*> &path) {
 	double totalDist = 0;
+	Vertex* startCopy = vStart;
+	
 	while (true) {
 		if (vertsLeft.size() == 0)
 			break;
@@ -26,5 +28,9 @@ double BFS::bfs(Vertex *vStart, unordered_set<Vertex*> &vertsLeft, vector<Vertex
 		path.push_back(closestV);
 		vStart = closestV;
 	}
+	
+	path.push_back(startCopy);
+	totalDist+= path.back()->dist(*startCopy);
+
 	return totalDist;
 }
