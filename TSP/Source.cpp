@@ -24,9 +24,10 @@ int main(int argc, char* argv[]) {
 	std::srand(unsigned(std::time(0)));
 	
 	bool bfs = true;
-	bool simulated = false;
+	bool bfsPreprocess = true;
+	bool simulated = true;
 	bool randomized = false;
-	bool iterative = true;
+	bool iterative = false;
 
 	//parse data
 	Parser p;
@@ -49,6 +50,9 @@ int main(int argc, char* argv[]) {
 		Solution solution(path);
 		cout << solution.toString() << endl;
 		cout << solution.getTotalDist()<< endl;
+		
+		if (bfsPreprocess)
+			pointersToVerts = path;
 	}
 
 	if (simulated) {
@@ -57,7 +61,10 @@ int main(int argc, char* argv[]) {
 		Solution s(pointersToVerts);
 		cout << "Start" << endl;
 
-		SimulatedAnnealing sim(1000, 40, 0.0000004,16384);
+		double init = 1000/3; //350 is better with preprocessing
+		double rate = 0.0000004/4; //can be smaller for init 350
+
+		SimulatedAnnealing sim(init, 40, rate,16384);
 		Solution finalSolution = sim.run(s);
 		cout << "End" << endl;
 
