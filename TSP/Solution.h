@@ -6,6 +6,7 @@ class Solution
 {
 public:
 	Solution(std::vector<Vertex*> verts);
+	Solution();
 	void shuffle();
 	double getTotalDist() { return totalDist; };
 	int getNumberOfVerts() { return numberOfVerts; };

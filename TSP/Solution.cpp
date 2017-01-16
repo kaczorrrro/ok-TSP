@@ -12,6 +12,8 @@ Solution::Solution(vector<Vertex*> verts) : path(verts) {
 	totalDist = calculateDistance();
 	numberOfVerts = (int)path.size();
 }
+Solution::Solution() {}
+
 
 void Solution::shuffle()
 {

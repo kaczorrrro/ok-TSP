@@ -12,26 +12,32 @@
 #include "SimulatedAnnealing.h"
 #include "RandomizedLocalSearch.h"
 #include "RandomizedIterativeImprovement.h"
+#include <signal.h>
 using namespace std;
 
-SimulatedAnnealing * simPointer;
+static SimulatedAnnealing * simPointer;
+static double initTemp = 100;
+static double minTemp = 0.1;
+static double speed = 1e-7;
 
 void ctrlCHandler(int sigNum) {
+	simPointer->stopOutput();
 	cout << "Enter new temp" << endl;
 	double newTemp;
 	cin >> newTemp;
+	simPointer->changeCurrentTemp(newTemp);
+	simPointer->startOutput();
+	signal(SIGINT, ctrlCHandler);
 
 }
-
 
 int main(int argc, char* argv[]) {
 	if (argc < 2) {
 		cout << "Enter file [start min speed]" << endl;
 		return -1;
 	}
-	double initTemp = 100;
-	double minTemp = 0.1;
-	double speed = 1e-7;
+
+	signal(SIGINT, ctrlCHandler);
 
 	if (argc == 5) {
 		initTemp = std::stod(argv[2]);
@@ -79,8 +85,9 @@ int main(int argc, char* argv[]) {
 		Solution s(pointersToVerts);
 		cout << "Start" << endl;
 
-		SimulatedAnnealing sim(initTemp, minTemp, speed, 16384*16);
-		Solution finalSolution = sim.run(s);
+		SimulatedAnnealing sim;
+		simPointer = &sim;
+		Solution finalSolution = sim.run(s, initTemp, minTemp, speed, 16384 * 16);
 		cout << "End" << endl;
 
 		cout << finalSolution.toString() << endl;
