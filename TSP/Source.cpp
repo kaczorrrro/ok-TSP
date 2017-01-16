@@ -16,9 +16,9 @@
 using namespace std;
 
 static SimulatedAnnealing * simPointer;
-static double initTemp = 100;
+static double initTemp = 1000;
 static double minTemp = 0.1;
-static double speed = 1e-7;
+static double speed = 1e-9;
 
 void ctrlCHandler(int sigNum) {
 	simPointer->stopOutput();
