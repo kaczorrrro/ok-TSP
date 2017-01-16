@@ -3,12 +3,17 @@
 
 SimulatedAnnealing::SimulatedAnnealing(double startTemp, double minTemp, double speed, int infoFreq): startTemp(startTemp),minTemp(minTemp), coolingRate(speed), infoFreq(infoFreq)
 {
+	std::random_device rd;     // only used once to initialise (seed) engine
+	randomEngine = std::mt19937(rd());    // random-number engine used (Mersenne-Twister in this case)
 }
 
 Solution SimulatedAnnealing::run(Solution solution)
 {
+	int sumWorseAccepted = 0;
+
 	int vertsCount = solution.getNumberOfVerts() - 1;
-	
+	std::uniform_int_distribution<int> randomDistribution(0, vertsCount-1);
+
 	Solution currentBest = solution;
 	double bestDistance = currentBest.getTotalDist();
 
@@ -16,15 +21,16 @@ Solution SimulatedAnnealing::run(Solution solution)
 	int i = 0;
 	for (double temp = startTemp; temp > minTemp; temp *= (1-coolingRate), i++) {
 		if (i % infoFreq == 0) {
-			cout << "Current temp: " << temp << "\tBest solution: " << currentBest.getTotalDist() << "\tLocal solution: " << solution.getTotalDist() << endl;
+			cout << "Current temp: " << temp << "\tBest solution: " << currentBest.getTotalDist() << "\tLocal solution: " << solution.getTotalDist() << "\tAcceptance rate: " << sumWorseAccepted / (double)infoFreq << endl;
+			sumWorseAccepted = 0;
 		}
 		int p1, p2;
-		p1 = rand() % vertsCount;
-		p2 = rand() % vertsCount;
+		p1 = randomDistribution(randomEngine);
+		p2 = randomDistribution(randomEngine);
 		
 		double newDistance = solution.getDistForSwapped(p1, p2);
 
-		if (shouldSwap(oldDistance, newDistance, temp)){
+		if (shouldSwap(oldDistance, newDistance, temp, sumWorseAccepted)){
 			solution.swap(p1, p2);
 			oldDistance = newDistance;
 			if (newDistance < bestDistance) {
@@ -37,11 +43,17 @@ Solution SimulatedAnnealing::run(Solution solution)
 	return currentBest;
 }
 
-bool SimulatedAnnealing::shouldSwap(double oldDistance, double newDistance, double temp){
+
+bool SimulatedAnnealing::shouldSwap(double oldDistance, double newDistance, double temp, int& sumWorse){
+	static std::uniform_real_distribution<> dis(0, 1);
 	if (oldDistance >= newDistance)
 		return true;
-	double x = ((double)rand() / (RAND_MAX));
-	return x < exp( (oldDistance - newDistance ) / temp );
+	double x = dis(randomEngine);
+	if (x < exp((oldDistance - newDistance) / temp)) {
+		++sumWorse;
+		return true;
+	}
+	return false;
 }
 
 

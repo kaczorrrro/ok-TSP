@@ -29,7 +29,8 @@ double BFS::bfs(Vertex *vStart, unordered_set<Vertex*> &vertsLeft, vector<Vertex
 		vStart = closestV;
 	}
 	
-	path.push_back(startCopy);
+	//path.push_back(startCopy);
+	//tego chyba nie powinno byc
 	totalDist+= path.back()->dist(*startCopy);
 
 	return totalDist;

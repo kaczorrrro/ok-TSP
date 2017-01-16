@@ -14,16 +14,34 @@
 #include "RandomizedIterativeImprovement.h"
 using namespace std;
 
+SimulatedAnnealing * simPointer;
+
+void ctrlCHandler(int sigNum) {
+	cout << "Enter new temp" << endl;
+	double newTemp;
+	cin >> newTemp;
+
+}
 
 
 int main(int argc, char* argv[]) {
-	if (argc != 2) {
-		cout << "Enter file" << endl;
+	if (argc < 2) {
+		cout << "Enter file [start min speed]" << endl;
 		return -1;
 	}
-	std::srand(unsigned(std::time(0)));
+	double initTemp = 100;
+	double minTemp = 0.1;
+	double speed = 1e-7;
+
+	if (argc == 5) {
+		initTemp = std::stod(argv[2]);
+		minTemp = std::stod(argv[3]);
+		speed = std::stod(argv[4]);
+	}
+
 	
-	bool bfs = true;
+	
+	bool bfs = false;
 	bool bfsPreprocess = true;
 	bool simulated = true;
 	bool randomized = false;
@@ -61,10 +79,7 @@ int main(int argc, char* argv[]) {
 		Solution s(pointersToVerts);
 		cout << "Start" << endl;
 
-		double init = 1000/3; //350 is better with preprocessing
-		double rate = 0.0000004/4; //can be smaller for init 350
-
-		SimulatedAnnealing sim(init, 40, rate,16384);
+		SimulatedAnnealing sim(initTemp, minTemp, speed, 16384*16);
 		Solution finalSolution = sim.run(s);
 		cout << "End" << endl;
 
